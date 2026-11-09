@@ -1,0 +1,79 @@
+
+<%- include('partials/header') %>
+
+<h2>📝 나의 할 일</h2>
+
+<!-- 할 일 등록 -->
+<form action="/todos" method="POST">
+    <input
+        type="text"
+        name="title"
+        placeholder="할 일을 입력하시오"
+        required
+    >
+
+    <input type="date" name="due_date">
+
+    <button type="submit">할 일 추가</button>
+</form>
+
+<!-- 전체 / 미완료 / 완료 필터 -->
+<nav class="filters">
+    <a href="/todos?filter=all">전체</a>
+    <a href="/todos?filter=active">미완료</a>
+    <a href="/todos?filter=done">완료</a>
+</nav>
+
+<!-- 할 일 목록 -->
+<h3>체크리스트</h3>
+
+<ul>
+    <% todos.forEach(todo => { %>
+        <li>
+            <form action="/todos/<%= todo.id %>/toggle" method="POST">
+                <button type="submit">
+                    <%= todo.done ? '☑' : '☐' %>
+                </button>
+            </form>
+
+            <span class="<%= todo.done ? 'done' : '' %>">
+                <%= todo.title %>
+            </span>
+
+            <p>
+                마감일:
+                <%= todo.due_date
+                    ? new Date(todo.due_date).toISOString().slice(0,10)
+                    : '없음' %>
+            </p>
+
+            <a href="/todos/<%= todo.id %>/edit">수정</a>
+
+            <form action="/todos/<%= todo.id %>/delete" method="POST">
+                <button type="submit">삭제</button>
+            </form>
+        </li>
+    <% }) %>
+</ul>
+
+<%- include('partials/footer') %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
